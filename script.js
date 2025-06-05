@@ -74,3 +74,19 @@ modal.addEventListener('click', function(e) {
   }
 });
 
+
+ document.addEventListener('DOMContentLoaded', function () {
+    const links = document.querySelectorAll('nav a[href^="/"], .social-link[href^="https"]');
+
+    links.forEach(link => {
+      link.addEventListener('click', function (e) {
+        if (link.target === '_blank') return;
+        e.preventDefault();
+        const href = link.getAttribute('href');
+        document.documentElement.style.opacity = '0';
+        setTimeout(() => {
+          window.location.href = href;
+        }, 400);
+      });
+    });
+  });
