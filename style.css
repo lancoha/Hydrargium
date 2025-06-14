@@ -152,7 +152,7 @@ ul {
   padding: 0 2rem;
 }
 
-.about-puppies {
+.about-puppies,.about-gallery {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1rem;
@@ -167,13 +167,6 @@ ul {
   border-radius:.5rem;
 }
 
-.about-gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1rem;
-  margin-top: 2rem;
-  grid-template-columns:repeat(2,1fr);
-}
 .about-gallery img{
   width:100%;
   aspect-ratio:1/1;
@@ -412,7 +405,7 @@ body.modal-open > *:not(.modal) {
   .cta a{
     margin-left:0;
   }
-  .about-gallery{ grid-template-columns:1fr; }
+  .about-gallery,.about-puppies{ grid-template-columns:1fr; }
   .hero{ position:relative; }
   .hero-overlay{
     margin-top:20vh;
