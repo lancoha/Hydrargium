@@ -109,7 +109,7 @@ ul {
 
 .hero {
   height: 100vh;
-  background: url('images/main.jpeg') center / cover fixed no-repeat;
+  background: url('images/Siberia.jpg') center / cover fixed no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -348,4 +348,19 @@ body.modal-open > *:not(.modal) {
   transform: scale(1.1);
 }
 
-
+.husky-card img{
+  width:100%;
+  aspect-ratio:3/5;
+  object-fit:cover;
+  border-radius:.5rem;
+}
+.cta a{
+  display:inline-block;
+  padding:.45rem 1rem;
+  background:var(--accent);
+  color:#fff;
+  border-radius:.3rem;
+  font-weight:600;
+  transition:opacity .25s;
+}
+.cta a:hover{ opacity:.8; }
