@@ -60,7 +60,7 @@ ul {
   position: fixed;
   top: 0;
   width: 100%;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.75);
   display: flex;
   justify-content: space-between;
   align-items: center;
