@@ -3,7 +3,9 @@ backend:
   repo: lancoha/Hydrargium
   branch: main
   auth_type: pkce
-  client_id: Ov23lizkpzeHMpZts6nW 
+  app_id: Ov23lizkpzeHMpZts6nW
+  api_root: https://api.github.com
+  auth_endpoint: https://github.com/login/oauth/authorize
 
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
@@ -13,6 +15,7 @@ collections:
     label: Posts
     folder: posts
     create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
       - { label: Title, name: title, widget: string }
       - { label: Date,  name: date,  widget: datetime }
