@@ -1,0 +1,21 @@
+backend:
+  name: github
+  repo: lancoha/Hydrargium            # ⬅️   tvoj repo
+  branch: main
+  auth_type: pkce                    # ⬅️   brez client_secret
+  client_id: Ov23lizkpzeHMpZts6nW       # ⬅️   skopiraj svoj Client ID
+
+media_folder: "images/uploads"       # kam CMS shranjuje slike
+public_folder: "/images/uploads"
+
+collections:
+  - name: "posts"
+    label: "Posts"
+    folder: "posts"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title",  name: "title",  widget: "string" }
+      - { label: "Date",   name: "date",   widget: "datetime" }
+      - { label: "Image",  name: "image",  widget: "image", required: false }
+      - { label: "Body",   name: "body",   widget: "markdown" }
