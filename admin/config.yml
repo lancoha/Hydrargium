@@ -2,7 +2,7 @@ backend:
   name: github
   repo: lancoha/Hydrargium
   branch: main
-  auth_type: implicit
+  auth_type: pkce
   client_id: Ov23lizkpzeHMpZts6nW
 
 media_folder: "images/uploads"
@@ -15,6 +15,4 @@ collections:
     create: true
     fields:
       - { label: Title, name: title, widget: string }
-      - { label: Date,  name: date,  widget: datetime }
-      - { label: Image, name: image, widget: image, required: false }
       - { label: Body,  name: body,  widget: markdown }
