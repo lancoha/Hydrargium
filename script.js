@@ -8,11 +8,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  window.handleFormResponse = function(json) {
+    const statusEl = document.getElementById('form-status');
+    const form = document.getElementById('contact-form');
+    if (json.result === 'success') {
+      statusEl.style.color = 'green';
+      statusEl.textContent = 'Thank you! Your message has been sent. You will receive the confirmation email shortly.';
+      form.reset();
+    } else {
+      statusEl.style.color = 'red';
+      statusEl.textContent = json.message || 'Sorry, there was an error. Please try again.';
+    }
+  };
+
   const form = document.getElementById('contact-form');
   const statusEl = document.getElementById('form-status');
   if (form && statusEl) {
     const SCRIPT_URL =
-      "https://script.google.com/macros/s/AKfycbyEbeCKN-YZjYWwf8x2sa1HJb0KGSNKO0OgFmIS_Hq3kJ0k2nk-LvnoS_paFMCsxDMFFw/exec";;
+      "https://script.google.com/macros/s/AKfycbyEbeCKN-YZjYWwf8x2sa1HJb0KGSNKO0OgFmIS_Hq3kJ0k2nk-LvnoS_paFMCsxDMFFw/exec";
     form.addEventListener('submit', function (e) {
       e.preventDefault();
 
@@ -33,32 +46,19 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+
       statusEl.hidden = false;
       statusEl.style.color = "black";
       statusEl.textContent = "Sending…";
 
-      fetch(SCRIPT_URL, {
-        method: "POST",
-        body: formData,
-      })
-        .then((response) => response.json())
-        .then((json) => {
-          if (json.result === "success") {
-            statusEl.style.color = "green";
-            statusEl.textContent =
-              "Thank you! Your message has been sent. You will receive the confirmation email shortly.";
-            form.reset();
-          } else {
-            statusEl.style.color = "red";
-            statusEl.textContent = "Sorry, there was an error. Please try again.";
-          }
-        })
-        .catch((err) => {
-          console.error("Fetch error:", err);
-          statusEl.style.color = "red";
-          statusEl.textContent =
-            "Error sending. Please check your connection or try again later.";
-        });
+      const params = new URLSearchParams();
+      formData.forEach((value, key) => {
+        params.append(key, value);
+      });
+      params.append('callback', 'handleFormResponse');
+      const script = document.createElement('script');
+      script.src = SCRIPT_URL + '?' + params.toString();
+      document.body.appendChild(script);
     });
   }
 
