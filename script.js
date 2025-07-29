@@ -46,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-
       statusEl.hidden = false;
       statusEl.style.color = "black";
       statusEl.textContent = "Sending…";
@@ -57,6 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       params.append('callback', 'handleFormResponse');
       const script = document.createElement('script');
+      script.async = true;
+      script.crossOrigin = 'anonymous';
       script.src = SCRIPT_URL + '?' + params.toString();
       document.body.appendChild(script);
     });
