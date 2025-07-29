@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
       "https://script.google.com/macros/s/AKfycbzfivK0vYUysNWprXvPXWE_LMzCN49rRSwehqweo3C6Gk6TvlJwxAAx16V4OhhZjne1Bg/exec";
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+
       const now = Date.now();
       if (now - loadTime < 5000) {
         statusEl.hidden = false;
@@ -23,11 +24,19 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      const formData = new FormData(form);
+      const recaptcha = formData.get('g-recaptcha-response');
+      if (!recaptcha) {
+        statusEl.hidden = false;
+        statusEl.style.color = 'red';
+        statusEl.textContent = 'Please solve CAPTCHA.';
+        return;
+      }
+
       statusEl.hidden = false;
       statusEl.style.color = "black";
       statusEl.textContent = "Sending…";
 
-      const formData = new FormData(form);
       fetch(SCRIPT_URL, {
         method: "POST",
         body: formData,
@@ -36,7 +45,8 @@ document.addEventListener('DOMContentLoaded', () => {
         .then((json) => {
           if (json.result === "success") {
             statusEl.style.color = "green";
-            statusEl.textContent = "Thank you! Your message has been sent. You will receive the confirmation email shortly.";
+            statusEl.textContent =
+              "Thank you! Your message has been sent. You will receive the confirmation email shortly.";
             form.reset();
           } else {
             statusEl.style.color = "red";
@@ -46,7 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch((err) => {
           console.error("Fetch error:", err);
           statusEl.style.color = "red";
-          statusEl.textContent = "Error sending. Please check your connection or try again later.";
+          statusEl.textContent =
+            "Error sending. Please check your connection or try again later.";
         });
     });
   }
