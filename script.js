@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const statusEl = document.getElementById('form-status');
   if (form && statusEl) {
     const SCRIPT_URL =
-      "https://script.google.com/macros/s/AKfycbzfivK0vYUysNWprXvPXWE_LMzCN49rRSwehqweo3C6Gk6TvlJwxAAx16V4OhhZjne1Bg/exec";
+      "https://script.google.com/macros/s/AKfycbyEbeCKN-YZjYWwf8x2sa1HJb0KGSNKO0OgFmIS_Hq3kJ0k2nk-LvnoS_paFMCsxDMFFw/exec";;
     form.addEventListener('submit', function (e) {
       e.preventDefault();
 
