@@ -1,11 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const form     = document.getElementById('contact-form');
-  const btn      = document.getElementById('my-form-button');
-  const statusEl = document.getElementById('form-status');
-  const loadTime = Date.now();
-  const URL      = 'https://script.google.com/macros/s/AKfycb…/exec';
+  const form      = document.getElementById('contact-form');
+  const btn       = document.getElementById('my-form-button');
+  const statusEl  = document.getElementById('form-status');
+  const loadTime  = Date.now();
+  const URL       = 'https://script.google.com/macros/s/AKfycb…/exec';
 
-  window.onCaptchaSolved = () => btn.disabled = false;
+  window.onCaptchaSolved = () => {
+    btn.disabled = false;
+  };
 
   form.addEventListener('submit', e => {
     e.preventDefault();
@@ -16,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
       statusEl.textContent = 'Please wait at least 5 seconds before submitting.';
       return;
     }
+
     if (!grecaptcha.getResponse()) {
       statusEl.style.color = 'red';
       statusEl.textContent = 'Please solve the CAPTCHA.';
@@ -25,12 +28,16 @@ document.addEventListener('DOMContentLoaded', () => {
     statusEl.style.color = 'black';
     statusEl.textContent = 'Sending…';
 
-    fetch(URL, { method: 'POST', body: new FormData(form) })
+    fetch(URL, {
+      method: 'POST',
+      body: new FormData(form)
+    })
       .then(res => res.json())
       .then(json => {
         if (json.result === 'success') {
           statusEl.style.color = 'green';
-          statusEl.textContent = 'Your message has been sent. You will receive a confirmation email shortly.';
+          statusEl.textContent =
+            'Your message has been sent. You will receive a confirmation email shortly.';
           form.reset();
           btn.disabled = true;
           grecaptcha.reset();
@@ -44,14 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
         statusEl.textContent = 'Network error. Please try again.';
       });
   });
-});
-
 
   const modal     = document.getElementById('imgModal');
   const modalImg  = document.getElementById('modalImg');
   const closeBtn  = document.querySelector('.modal-close');
   const zoomables = document.querySelectorAll('.zoomable');
-  if (modal && modalImg && closeBtn && zoomables.length > 0) {
+  if (modal && modalImg && closeBtn && zoomables.length) {
     zoomables.forEach(img => {
       img.addEventListener('click', () => {
         modalImg.src = img.src;
