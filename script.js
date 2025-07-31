@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeBtn = document.querySelector('.modal-close');
   const zoomables = document.querySelectorAll('.zoomable');
   if (modal && modalImg && closeBtn && zoomables.length > 0) {
-    zoomables.forEach(img => {
+    zoomables.forEach((img) => {
       img.addEventListener('click', () => {
         modalImg.src = img.src;
         modal.style.display = 'flex';
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.classList.remove('modal-open');
       modalImg.src = '';
     });
-    modal.addEventListener('click', e => {
+    modal.addEventListener('click', (e) => {
       if (e.target === modal) {
         modal.style.display = 'none';
         document.body.classList.remove('modal-open');
@@ -77,22 +77,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  const navToggle = document.getElementById('nav-toggle');
-  const navLinks = document.querySelector('.nav-links');
-  if (navToggle && navLinks) {
-    navToggle.addEventListener('click', () => {
-      navLinks.classList.toggle('show');
-    });
-  }
-
   const links = document.querySelectorAll('nav a[href^="/"], .social-link[href^="https"]');
   links.forEach(link => {
-    link.addEventListener('click', e => {
+    link.addEventListener('click', function (e) {
       if (link.target === '_blank') return;
       e.preventDefault();
+      const href = link.getAttribute('href');
       document.documentElement.style.opacity = '0';
       setTimeout(() => {
-        window.location.href = link.getAttribute('href');
+        window.location.href = href;
       }, 400);
     });
   });
