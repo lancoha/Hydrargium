@@ -34,24 +34,22 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .then(json => {
         if (json.result === 'success') {
-          statusEl.style.color = 'green';
-          statusEl.textContent = 'Your message has been sent. You will receive a confirmation email shortly.';
+          statusEl.style.color   = 'green';
+          statusEl.textContent   = 'Your message has been sent. You will receive a confirmation email shortly.';
           form.reset();
           btn.disabled = true;
           grecaptcha.reset();
         } else {
-          statusEl.style.color = 'red';
-          statusEl.textContent = json.message || 'There was an error. Please try again.';
+          statusEl.style.color   = 'red';
+          statusEl.textContent   = json.message || 'There was an error. Please try again.';
         }
       })
       .catch(err => {
-        statusEl.style.color = 'red';
-        statusEl.textContent = 'Network error. Please try again.';
+        statusEl.style.color   = 'red';
+        statusEl.textContent   = 'Network error. Please try again.';
         console.error(err);
       });
   });
-});
-
 
   const modal     = document.getElementById('imgModal');
   const modalImg  = document.getElementById('modalImg');
