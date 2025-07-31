@@ -1,57 +1,52 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const navToggle = document.getElementById('nav-toggle');
-  const navLinks  = document.querySelector('.nav-links');
-  if (navToggle && navLinks) {
-    navToggle.addEventListener('click', () => {
-      navLinks.classList.toggle('show');
-    });
-  }
-
   const form      = document.getElementById('contact-form');
   const submitBtn = document.getElementById('my-form-button');
   const statusEl  = document.getElementById('form-status');
   const loadTime  = Date.now();
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyEbeCKN-YZjYWwf8x2sa1HJb0KGSNKO0OgFmIS_Hq3kJ0k2nk-LvnoS_paFMCsxDMFFw/exec';
 
-  window.handleFormResponse = function(json) {
+  window.onCaptchaSolved = () => {
+    submitBtn.disabled = false;
+  };
+
+  window.handleFormResponse = json => {
     if (json.result === 'success') {
       statusEl.style.color = 'green';
-      statusEl.textContent = 'Your message has been sent. You will receive a confirmation email shortly.';
+      statusEl.textContent  = 'Your message has been sent. You will receive a confirmation email shortly.';
       form.reset();
     } else {
       statusEl.style.color = 'red';
-      statusEl.textContent = json.message || 'There was an error. Please try again.';
+      statusEl.textContent  = json.message || 'There was an error. Please try again.';
     }
     statusEl.hidden = false;
   };
 
-  window.onCaptchaSolved = function() {
-    submitBtn.disabled = false;
-  };
-
-  if (form && submitBtn && statusEl) {
-    form.addEventListener('submit', e => {
-      if (Date.now() - loadTime < 5000) {
-        e.preventDefault();
-        statusEl.hidden      = false;
-        statusEl.style.color = 'red';
-        statusEl.textContent = 'Please wait at least 5 seconds before submitting.';
-        return;
-      }
-
-      const cap = form.querySelector('[name="g-recaptcha-response"]').value;
-      if (!cap) {
-        e.preventDefault();
-        statusEl.hidden      = false;
-        statusEl.style.color = 'red';
-        statusEl.textContent = 'Please solve the CAPTCHA.';
-        return;
-      }
-
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (Date.now() - loadTime < 5000) {
       statusEl.hidden      = false;
-      statusEl.style.color = 'black';
-      statusEl.textContent = 'Sending…';
-    });
-  }
+      statusEl.style.color = 'red';
+      statusEl.textContent = 'Please wait at least 5 seconds before submitting.';
+      return;
+    }
+    const cap = form.querySelector('[name="g-recaptcha-response"]').value;
+    if (!cap) {
+      statusEl.hidden      = false;
+      statusEl.style.color = 'red';
+      statusEl.textContent = 'Please solve the CAPTCHA.';
+      return;
+    }
+    statusEl.hidden      = false;
+    statusEl.style.color = 'black';
+    statusEl.textContent = 'Sending…';
+    const params = new URLSearchParams();
+    new FormData(form).forEach((v, k) => params.append(k, v));
+    params.append('callback', 'handleFormResponse');
+    const s = document.createElement('script');
+    s.src = SCRIPT_URL + '?' + params.toString();
+    document.body.appendChild(s);
+  });
+});
 
   const modal     = document.getElementById('imgModal');
   const modalImg  = document.getElementById('modalImg');
