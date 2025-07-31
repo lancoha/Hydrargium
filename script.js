@@ -1,4 +1,3 @@
-<script>
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('contact-form');
   const btn = document.getElementById('my-form-button');
@@ -101,4 +100,3 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
-</script>
