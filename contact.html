@@ -11,14 +11,23 @@
   <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png" />
   <meta name="apple-mobile-web-app-title" content="Hydrargium" />
   <link rel="manifest" href="images/site.webmanifest" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
-    rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet"/>
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <script>
-    window.onCaptchaSolved = function(token) {
-      const btn = document.getElementById('my-form-button');
-      if (btn) btn.disabled = false;
+    window.onCaptchaSolved = function() {
+      document.getElementById('my-form-button').disabled = false;
+    };
+    window.handleFormResponse = function(json) {
+      const status = document.getElementById('form-status');
+      if (json.result === 'success') {
+        status.style.color = 'green';
+        status.textContent = 'Thank you! Your message has been sent.';
+        document.getElementById('contact-form').reset();
+      } else {
+        status.style.color = 'red';
+        status.textContent = json.message || 'There was an error. Please try again.';
+      }
+      status.hidden = false;
     };
   </script>
 </head>
@@ -34,67 +43,31 @@
         <li><a href="service-dogs.html">Service Dogs</a></li>
         <li><a href="contact.html" class="active">Contact</a></li>
       </ul>
-      <button id="nav-toggle" aria-label="Toggle navigation">
-        <span></span><span></span><span></span>
-      </button>
+      <button id="nav-toggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
     </nav>
   </header>
 
   <main class="container">
     <h2>Contact Us</h2>
-    <p>
-      Have a question about upcoming litters, our service dogs, or visiting the
-      kennel? Send us a message—we usually reply within 48&nbsp;hours.
-    </p>
-    <form
-      id="contact-form"
-      class="contact-form"
-      action="https://script.google.com/macros/s/AKfycbyEbeCKN-YZjYWwf8x2sa1HJb0KGSNKO0OgFmIS_Hq3kJ0k2nk-LvnoS_paFMCsxDMFFw/exec"
-      method="POST"
-    >
+    <p>Have a question about upcoming litters, our service dogs, or visiting the kennel? Send us a message—we usually reply within 48 hours.</p>
+    <iframe name="hidden_iframe" style="display:none;"></iframe>
+    <form id="contact-form" class="contact-form" target="hidden_iframe"
+          action="https://script.google.com/macros/s/AKfycbyEbeCKN-YZjYWwf8x2sa1HJb0KGSNKO0OgFmIS_Hq3kJ0k2nk-LvnoS_paFMCsxDMFFw/exec"
+          method="POST">
       <div class="form-group">
         <label for="name">Name*</label>
-        <input
-          type="text"
-          id="name"
-          name="user_name"
-          required
-          placeholder="Your name"
-        />
+        <input type="text" id="name" name="user_name" required placeholder="Your name"/>
       </div>
       <div class="form-group">
         <label for="email">Email*</label>
-        <input
-          type="email"
-          id="email"
-          name="user_email"
-          required
-          placeholder="you@example.com"
-        />
+        <input type="email" id="email" name="user_email" required placeholder="you@example.com"/>
       </div>
       <div class="form-group">
         <label for="message">Message*</label>
-        <textarea
-          id="message"
-          name="message"
-          rows="6"
-          required
-          placeholder="Tell us how we can help you…"
-        ></textarea>
+        <textarea id="message" name="message" rows="6" required placeholder="Tell us how we can help you…"></textarea>
       </div>
-      <div
-        class="g-recaptcha"
-        data-sitekey="6Lf5jJMrAAAAADYUFgaliVAbWwYEwWVg2-N3j-Un"
-        data-callback="onCaptchaSolved"
-      ></div>
-      <button
-        type="submit"
-        class="btn"
-        id="my-form-button"
-        disabled
-      >
-        Send Message
-      </button>
+      <div class="g-recaptcha" data-sitekey="6Lf5jJMrAAAAADYUFgaliVAbWwYEwWVg2-N3j-Un" data-callback="onCaptchaSolved"></div>
+      <button type="submit" class="btn" id="my-form-button" disabled>Send Message</button>
       <p id="form-status" class="form-status" hidden></p>
     </form>
   </main>
