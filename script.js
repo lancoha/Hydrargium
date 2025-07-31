@@ -7,39 +7,49 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  const form       = document.getElementById('contact-form');
-  const submitBtn  = document.getElementById('my-form-button');
-  const statusEl   = document.getElementById('form-status');
-  const loadTime   = Date.now();
+  const form      = document.getElementById('contact-form');
+  const submitBtn = document.getElementById('my-form-button');
+  const statusEl  = document.getElementById('form-status');
+  const loadTime  = Date.now();
 
-  window.onCaptchaSolved = function(token) {
-    if (submitBtn) {
-      submitBtn.disabled = false;
+  window.handleFormResponse = function(json) {
+    if (json.result === 'success') {
+      statusEl.style.color = 'green';
+      statusEl.textContent = 'Your message has been sent. You will receive a confirmation email shortly.';
+      form.reset();
+    } else {
+      statusEl.style.color = 'red';
+      statusEl.textContent = json.message || 'There was an error. Please try again.';
     }
+    statusEl.hidden = false;
+  };
+
+  window.onCaptchaSolved = function() {
+    submitBtn.disabled = false;
   };
 
   if (form && submitBtn && statusEl) {
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', e => {
       if (Date.now() - loadTime < 5000) {
         e.preventDefault();
-        statusEl.hidden       = false;
-        statusEl.style.color  = 'red';
-        statusEl.textContent  = 'Please wait at least 5 seconds before submitting.';
+        statusEl.hidden      = false;
+        statusEl.style.color = 'red';
+        statusEl.textContent = 'Please wait at least 5 seconds before submitting.';
         return;
       }
 
-      const recaptchaValue = form.querySelector('[name="g-recaptcha-response"]').value;
-      if (!recaptchaValue) {
+      const cap = form.querySelector('[name="g-recaptcha-response"]').value;
+      if (!cap) {
         e.preventDefault();
-        statusEl.hidden       = false;
-        statusEl.style.color  = 'red';
-        statusEl.textContent  = 'Please solve CAPTCHA.';
+        statusEl.hidden      = false;
+        statusEl.style.color = 'red';
+        statusEl.textContent = 'Please solve the CAPTCHA.';
         return;
       }
 
-      statusEl.hidden       = false;
-      statusEl.style.color  = 'black';
-      statusEl.textContent  = 'Sending…';
+      statusEl.hidden      = false;
+      statusEl.style.color = 'black';
+      statusEl.textContent = 'Sending…';
     });
   }
 
