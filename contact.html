@@ -17,18 +17,6 @@
     window.onCaptchaSolved = function() {
       document.getElementById('my-form-button').disabled = false;
     };
-    window.handleFormResponse = function(json) {
-      const status = document.getElementById('form-status');
-      if (json.result === 'success') {
-        status.style.color = 'green';
-        status.textContent = 'Thank you! Your message has been sent.';
-        document.getElementById('contact-form').reset();
-      } else {
-        status.style.color = 'red';
-        status.textContent = json.message || 'There was an error. Please try again.';
-      }
-      status.hidden = false;
-    };
   </script>
 </head>
 <body>
@@ -50,10 +38,7 @@
   <main class="container">
     <h2>Contact Us</h2>
     <p>Have a question about upcoming litters, our service dogs, or visiting the kennel? Send us a message—we usually reply within 48 hours.</p>
-    <iframe name="hidden_iframe" style="display:none;"></iframe>
-    <form id="contact-form" class="contact-form" target="hidden_iframe"
-          action="https://script.google.com/macros/s/AKfycbyEbeCKN-YZjYWwf8x2sa1HJb0KGSNKO0OgFmIS_Hq3kJ0k2nk-LvnoS_paFMCsxDMFFw/exec"
-          method="POST">
+    <form id="contact-form" class="contact-form">
       <div class="form-group">
         <label for="name">Name*</label>
         <input type="text" id="name" name="user_name" required placeholder="Your name"/>
@@ -66,7 +51,9 @@
         <label for="message">Message*</label>
         <textarea id="message" name="message" rows="6" required placeholder="Tell us how we can help you…"></textarea>
       </div>
-      <div class="g-recaptcha" data-sitekey="6Lf5jJMrAAAAADYUFgaliVAbWwYEwWVg2-N3j-Un" data-callback="onCaptchaSolved"></div>
+      <div class="g-recaptcha"
+           data-sitekey="6Lf5jJMrAAAAADYUFgaliVAbWwYEwWVg2-N3j-Un"
+           data-callback="onCaptchaSolved"></div>
       <button type="submit" class="btn" id="my-form-button" disabled>Send Message</button>
       <p id="form-status" class="form-status" hidden></p>
     </form>
